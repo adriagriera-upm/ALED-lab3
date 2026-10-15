@@ -1,5 +1,6 @@
 package es.upm.dit.aled.lab3.binary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,8 +79,73 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	 */
 	@Override
 	public List<Integer> search(byte[] pattern) {
-		// TODO
-		return null;
+		
+		int lo = 0;
+		int hi = suffixes.length-1;
+		int pos = (hi - lo)/2;
+		boolean found = false;
+		int index = pos;
+		while(found == false || hi-lo < 1) { //Mientras que las primeras bases del sufijo no coincidan con el pattern
+			int j = 0;
+			for(int i=pos;i<pattern.length - 1 + pos;i++) {
+				if(content[i] < pattern[j]) {
+					found = false;
+					lo= pos + 1;
+					pos = lo + ((hi - lo)/2);
+					break;
+				}else if(content[i] > pattern[j]) {
+					found = false;
+					hi= (pos-1);
+					pos = lo + (hi-lo)/2;
+					break;
+				}
+				j++;
+				found = true;
+			}
+		}
+		List<Integer> foundAt = new ArrayList<>();
+		
+		for(int k=pos; )
+		if(found == false) {
+			System.out.println("Pattern not in the sequence");
+			return null;
+		} else {
+			return null;
+		}
+	}
+	
+	
+	public int  singleSearch(byte[] pattern) { //Complejidad O(n*log(n))
+		
+		int lo = 0;
+		int hi = suffixes.length-1;
+		int pos = (hi - lo)/2;
+		boolean found = false;
+		int index = pos;
+		while(found == false || hi-lo < 1) { //Mientras que las primeras bases del sufijo no coincidan con el pattern
+			int j = 0;
+			for(int i=pos;i<pattern.length - 1 + pos;i++) {
+				if(content[i] < pattern[j]) {
+					found = false;
+					lo= pos + 1;
+					pos = lo + ((hi - lo)/2);
+					break;
+				}else if(content[i] > pattern[j]) {
+					found = false;
+					hi= (pos-1);
+					pos = lo + (hi-lo)/2;
+					break;
+				}
+				j++;
+				found = true;
+			}
+		}
+		if(found == false) {
+			System.out.println("Pattern not in the sequence");
+			return -1;
+		} else {
+			return pos;
+		}
 	}
 
 	public static void main(String[] args) {
@@ -93,6 +159,8 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		System.out.println("Tiempo de ordenación: " + (System.nanoTime() - t2));
 		reader.printSuffixes();
 		long t3 = System.nanoTime();
+		int position = reader.singleSearch(patron);
+		System.out.println("Encontrado " + args[1] + " en " + position);
 		List<Integer> posiciones = reader.search(patron);
 		System.out.println("Tiempo de búsqueda: " + (System.nanoTime() - t3));
 		if (posiciones.size() > 0) {
