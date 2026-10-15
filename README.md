@@ -34,3 +34,7 @@ Los ficheros `cromosomes/chr19.fa` y `cromosomes/chr19segment.fa`
 proceden del ensamblado de referencia GRCh38 (Genome Reference
 Consortium) y no están cubiertos por ninguna de las dos licencias. El
 resto de secuencias de `cromosomes/` son sintéticas.
+
+## Nota para mi fork
+
+Los commits son de esta tarde porque importé el repositorio sin forkear y me acabo de dar cuenta ahora. Aun así, he conseguido solucionarlo.
