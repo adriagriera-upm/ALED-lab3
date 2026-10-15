@@ -80,12 +80,12 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	@Override
 	public List<Integer> search(byte[] pattern) {
 		
+		List<Integer> foundAt = new ArrayList<>();
 		int lo = 0;
 		int hi = suffixes.length-1;
 		int pos = (hi - lo)/2;
 		boolean found = false;
-		int index = pos;
-		while(found == false || hi-lo < 1) { //Mientras que las primeras bases del sufijo no coincidan con el pattern
+		while(found == false && hi-lo > 1) { 
 			int j = 0;
 			for(int i=pos;i<pattern.length - 1 + pos;i++) {
 				if(content[i] < pattern[j]) {
@@ -100,16 +100,33 @@ public class FASTAReaderSuffixes extends FASTAReader {
 					break;
 				}
 				j++;
-				found = true;
+				found = true;	
 			}
 		}
-		List<Integer> foundAt = new ArrayList<>();
+		foundAt.add(pos);
+		if(found == true) {
+			//Explorar índices anteriores
+			int i = 
+			while(i >= 0) {
+				
+			}
+			
+			//Explorar índices siguientes
 		
-		for(int k=pos; )
-		if(found == false) {
+		
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			return foundAt;
+		}
+		else {
 			System.out.println("Pattern not in the sequence");
-			return null;
-		} else {
 			return null;
 		}
 	}
@@ -121,8 +138,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		int hi = suffixes.length-1;
 		int pos = (hi - lo)/2;
 		boolean found = false;
-		int index = pos;
-		while(found == false || hi-lo < 1) { //Mientras que las primeras bases del sufijo no coincidan con el pattern
+		while(found == false && hi-lo > 1) {
 			int j = 0;
 			for(int i=pos;i<pattern.length - 1 + pos;i++) {
 				if(content[i] < pattern[j]) {
@@ -139,6 +155,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 				j++;
 				found = true;
 			}
+		
 		}
 		if(found == false) {
 			System.out.println("Pattern not in the sequence");
