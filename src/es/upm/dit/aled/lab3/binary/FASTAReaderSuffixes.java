@@ -81,22 +81,25 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	public List<Integer> search(byte[] pattern) {
 		
 		List<Integer> foundAt = new ArrayList<>();
-		int lo = 0;
-		int hi = suffixes.length-1;
-		int pos = (hi - lo)/2;
+		int lo= 0;
+		int hi=suffixes.length - 1;
+		int alphaind = (hi-lo)/2;
+		
 		boolean found = false;
-		while(found == false && hi-lo > 1) { 
+		int pos = 0;
+		while(found == false && lo<=hi) {
+			pos = suffixes[alphaind].suffixIndex;
 			int j = 0;
-			for(int i=pos;i<pattern.length - 1 + pos;i++) {
+			for(int i=pos;i<pattern.length + pos;i++) {
 				if(content[i] < pattern[j]) {
 					found = false;
-					lo= pos + 1;
-					pos = lo + ((hi - lo)/2);
+					lo = alphaind + 1;
+					alphaind = lo + ((hi - lo)/2);
 					break;
 				}else if(content[i] > pattern[j]) {
 					found = false;
-					hi= (pos-1);
-					pos = lo + (hi-lo)/2;
+					hi= (alphaind-1);
+					alphaind= lo + (hi-lo)/2;
 					break;
 				}
 				j++;
@@ -105,24 +108,23 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		}
 		foundAt.add(pos);
 		if(found == true) {
-			//Explorar índices anteriores
-			int i = 
-			while(i >= 0) {
-				
+			//Explorar alphainds anteriores
+			boolean sequencefound = true;
+			while(sequencefound) {
+				pos = suffixes[alphaind-1].suffixIndex;
+				int j = 0;
+				for(int i =pos;i<pattern.length + pos;i++) {
+					if(content[i] != pattern[j]) {
+						sequencefound = false;
+						break;
+					}
+					j++;
+				}
+				if(sequencefound == true) {
+					foundAt.add(pos);
+				}
+				alphaind--;
 			}
-			
-			//Explorar índices siguientes
-		
-		
-		
-			
-			
-			
-			
-			
-			
-			
-			
 			return foundAt;
 		}
 		else {
@@ -132,30 +134,33 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	}
 	
 	
-	public int  singleSearch(byte[] pattern) { //Complejidad O(n*log(n))
+	public int  singleSearch(byte[] pattern) { 
 		
-		int lo = 0;
-		int hi = suffixes.length-1;
-		int pos = (hi - lo)/2;
+		int lo= 0;
+		int hi=suffixes.length - 1;
+		int alphaind = (hi-lo)/2;
+		
 		boolean found = false;
-		while(found == false && hi-lo > 1) {
+		int pos = 0;
+		while(found == false && lo<=hi) {
+			pos = suffixes[alphaind].suffixIndex;
 			int j = 0;
-			for(int i=pos;i<pattern.length - 1 + pos;i++) {
+			for(int i=pos;i<pattern.length + pos;i++) {
 				if(content[i] < pattern[j]) {
 					found = false;
-					lo= pos + 1;
-					pos = lo + ((hi - lo)/2);
+					lo = alphaind + 1;
+					alphaind = lo + ((hi - lo)/2);
 					break;
 				}else if(content[i] > pattern[j]) {
 					found = false;
-					hi= (pos-1);
-					pos = lo + (hi-lo)/2;
+					hi= (alphaind-1);
+					alphaind= lo + (hi-lo)/2;
 					break;
 				}
 				j++;
-				found = true;
+				found = true;	
 			}
-		
+			
 		}
 		if(found == false) {
 			System.out.println("Pattern not in the sequence");
