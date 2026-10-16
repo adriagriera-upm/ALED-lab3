@@ -106,7 +106,6 @@ public class FASTAReaderSuffixes extends FASTAReader {
 				found = true;	
 			}
 		}
-		foundAt.add(pos);
 		if(found == true) {
 			//Explorar alphainds anteriores
 			boolean sequencefound = true;
@@ -134,7 +133,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	}
 	
 	
-	public int  singleSearch(byte[] pattern) { 
+	public int singleSearch(byte[] pattern) { 
 		
 		int lo= 0;
 		int hi=suffixes.length - 1;
@@ -182,7 +181,8 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		reader.printSuffixes();
 		long t3 = System.nanoTime();
 		int position = reader.singleSearch(patron);
-		System.out.println("Encontrado " + args[1] + " en " + position);
+		System.out.println("Primera ocurrencia encontrada " + args[1] + " en " + position);
+		System.out.println("Buscando más posiciones...");
 		List<Integer> posiciones = reader.search(patron);
 		System.out.println("Tiempo de búsqueda: " + (System.nanoTime() - t3));
 		if (posiciones.size() > 0) {
